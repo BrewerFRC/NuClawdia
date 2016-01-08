@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends RobotDrive {
 	private final DriveTrain instance = this;
 	private double previousMotorPower;
+	int angleSamples = 5;
+	double[] angle = new double[angleSamples];
+	int anglePointer = 0;
     
 	//Hdrive drive motors
 	static Talon frontL = new Talon(Constants.PWM_DRIVE_FL);
@@ -66,7 +69,16 @@ public class DriveTrain extends RobotDrive {
     	return this.accelerometer;
     }
     public double getForwardAngle() {
-    	return Math.toDegrees(Math.atan2(accelerometer.getZ(), accelerometer.getX()));
+    	anglePointer++;
+    	if (anglePointer == angleSamples) {
+    		anglePointer = 0;
+    	}
+    	angle[anglePointer] = Math.toDegrees(Math.atan2(accelerometer.getZ(), accelerometer.getX()));
+    	double sum = 0;
+    	for (double avgAngle : angle) {
+    		sum += avgAngle;
+    	}
+    	return sum/angleSamples; 
     }
     public PID getPID() {
     	return this.velPID;

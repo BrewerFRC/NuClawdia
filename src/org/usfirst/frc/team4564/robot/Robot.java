@@ -53,6 +53,7 @@ public class Robot extends SampleRobot {
     public void operatorControl() {
     	dt.init();
     	dt.setSafetyEnabled(true);
+    	
         while (isOperatorControl() && isEnabled()) {
             Timer.delay(0.005);		// wait for a motor update time
             SmartDashboard.putNumber("Encoder", dt.getEncoder().get());
@@ -61,6 +62,7 @@ public class Robot extends SampleRobot {
             SmartDashboard.putNumber("AccelY", dt.getAccelerometer().getY());
             SmartDashboard.putNumber("AccelZ", dt.getAccelerometer().getZ());
             SmartDashboard.putNumber("Angle", dt.getForwardAngle());
+            SmartDashboard.putNumber("PID Target", dt.getPID().target);
             Constants.p = SmartDashboard.getNumber("P");
             Constants.i = SmartDashboard.getNumber("I");
             Constants.d = SmartDashboard.getNumber("D");
@@ -68,6 +70,16 @@ public class Robot extends SampleRobot {
             if (joy.getRawButton(3)) {
             	double output = dt.getPIDOutput();
             	SmartDashboard.putNumber("PIDOutput", output);
+            	double angle = dt.getForwardAngle();
+            	if (angle >= 92) {
+            		dt.getPID().setTarget(2);
+            	}
+            	else if (angle <= 89) {
+            		dt.getPID().setTarget(-2);
+            	}
+            	else {
+            		dt.getPID().setTarget(0);
+            	}
             	dt.drive(output, 0.0);
             }
             else {

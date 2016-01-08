@@ -18,7 +18,7 @@ public class Constants {
 
 	
 	//velPID terms
-	public static double p = 0.00583/2;
+	public static double p = 0.00075; //.00583
 	public static double i = 0.0;
 	public static double d = 0.0;
 	public static final double target = 6;

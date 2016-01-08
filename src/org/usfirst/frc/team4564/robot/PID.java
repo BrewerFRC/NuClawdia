@@ -13,7 +13,7 @@ public class PID {
 	private PIDSource source;
 	
 	private double outputValue;
-	private double target;
+	public double target;
 	private double sumError;
 	private long time;
 	private double error;
